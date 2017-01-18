@@ -1,0 +1,22 @@
+{
+  "name": "cybersec-mooc-project",
+  "authors": [
+    "Kim Lindqvist <k.lindqvist@gmail.com>"
+  ],
+  "description": "project with intentional security flaws for cybersec mooc",
+  "main": "index.js",
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-bootstrap": "^2.4.0",
+    "angular-ui-router": "^0.3.2"
+  }
+}
