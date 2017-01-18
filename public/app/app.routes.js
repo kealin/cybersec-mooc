@@ -8,14 +8,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
     $stateProvider
 
         .state("home", {
-            url: "/home",
+            url: "/",
             templateUrl: 'app/components/home/homeView.html',
             controller  : 'homeController'
         })
-        .state("users", {
-            url: "/users",
-            templateUrl : 'app/components/users/usersView.html',
-            controller  : 'userController'
+        .state("feedback", {
+            url: "/feedback",
+            templateUrl : 'app/components/feedback/feedbackView.html',
+            controller  : 'feedbackController'
         })
         .state("admin", {
             url: "/admin",

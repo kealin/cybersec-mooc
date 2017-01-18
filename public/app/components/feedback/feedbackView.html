@@ -1,0 +1,15 @@
+<h1>Feedback</h1>
+
+<form role="form" ng-submit="send()">
+    <div class="form-group">
+        <label for="name">Name:</label> <input id="name" class="form-control" type="text" ng-model="feedback.name"/>
+    </div>
+    <div class="form-group">
+        <label for="email">Email:</label> <input id="email" type="text"
+                                                       class="form-control" ng-model="feedback.email"/>
+    </div>
+    <div class="form-group">
+        <label for="feedback">Feedback</label><textarea id="feedback" rows="5" class="form-control" ng-model="feedback.feedback"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>
