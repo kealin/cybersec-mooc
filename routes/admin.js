@@ -16,7 +16,6 @@ router.get('/users', function(req, res) {
   res.json(users);
 });
 
-/** Top 10 2013-A6-Sensitive Data Exposure **/
 router.post('/login', function(req, res) {
     if(req.body.username == 'admin' && req.body.password == '123') res.send('Youre the captain!');
     else res.json('Nice try!');

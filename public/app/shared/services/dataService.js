@@ -3,17 +3,26 @@
  */
 app.service('dataService', ['$http', function ($http) {
 
-    var urlBase = '/api/admin';
+    var adminUrlBase = '/api/admin';
+    var feedbackUrlBase = '/api/feedback';
 
     this.login = function (credentials) {
-        return $http.post(urlBase + '/login', credentials);
+        return $http.post(adminUrlBase + '/login', credentials);
     };
 
     this.getUsers = function() {
-        return $http.get(urlBase + '/users');
+        return $http.get(adminUrlBase + '/users');
     };
 
     this.removeUser = function(user) {
-        return $http.delete(urlBase + '/users/' + user.name);
+        return $http.delete(adminUrlBase + '/users/' + user.name);
     };
+
+    this.send = function(feedback) {
+        return $http.post(feedbackUrlBase, feedback);
+    }
+
+    this.getFeedbacks = function() {
+        return $http.get(feedbackUrlBase);
+    }
 }]);

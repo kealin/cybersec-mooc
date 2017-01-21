@@ -6,10 +6,28 @@
     </div>
     <div class="form-group">
         <label for="email">Email:</label> <input id="email" type="text"
-                                                       class="form-control" ng-model="feedback.email"/>
+                                                 class="form-control" ng-model="feedback.email"/>
     </div>
     <div class="form-group">
-        <label for="feedback">Feedback</label><textarea id="feedback" rows="5" class="form-control" ng-model="feedback.feedback"></textarea>
+        <label for="feedback">Feedback</label><textarea id="feedback" rows="5" class="form-control"
+                                                        ng-model="feedback.feedback"></textarea>
     </div>
-    <button type="submit" class="btn btn-primary">Login</button>
+    <button type="submit" class="btn btn-primary">Send</button>
 </form>
+
+    <table ng-if="feedbacks.length > 0" class="table table-striped table-bordered table-responsive users-table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Feedback</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="feedback in feedbacks">
+            <td>{{feedback.name}}</td>
+            <td>{{feedback.email}}</td>
+            <td>{{feedback.feedback}}</td>
+        </tr>
+        </tbody>
+    </table>

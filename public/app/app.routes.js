@@ -17,6 +17,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
             templateUrl : 'app/components/feedback/feedbackView.html',
             controller  : 'feedbackController'
         })
+        .state("redirect", {
+            url: "/redirect",
+            templateUrl : 'app/components/redirect/redirectView.html',
+            controller  : 'redirectController'
+        })
         .state("admin", {
             url: "/admin",
             templateUrl: 'app/components/admin/adminView.html',
