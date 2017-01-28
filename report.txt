@@ -1,0 +1,51 @@
+The project is located at https://github.com/kealin/cybersec-mooc. Installation instructions can be found in the README.md.
+ But just in case I'll also add them to this paragraph.The project is built on a node + angular stack and makes use of NPM for backend package management and bower on the frontend for handling dependencies. 
+
+You'll need to get both bower and node+npm. Afterwards clone the repository from the link above and head to the project root where you run npm install to install backend dependencies.
+ Then head to the public directory and run bower install to install the frontend dependencies. 
+
+Afterwards navigate to the projet root (with index.js) and run node index.js to run the project. 
+It will be hosted on port 80 by default, but this can be changed if needed at the bottom of index.js file.
+ Open up your browser by typing in localhost and you should see the project.
+
+The project uses a mock database (tingoDB) that appends data into a collection in the project root - so administrator priviledges are probably required for it to function properly. 
+A lot of the security flaws in the project are very naive and direct implementations of the flaws listed in the OWASP top 10 list and probably would never be found in real life applications in their current form.
+ They should however give a pretty clear idea on what kind of issues are out there and this little report hopefully on how to counter them.
+
+The project contains 4 different views (home, feedback, redirect and admin), the home view is just a landing page without any functionality.
+On the feedback page there is a demonstration of a feedback form that appends feedback posts to the backend directly without any kind of parsing or parametrization (A1-Injection).
+The database in question (tingoDB) is a mock wrapper built around mongoDB so in a sense it is automatically protected against injections as you can't directly run queries without the parameters anyway.
+It is however just built to demonstrate unsecured data passing directly into the database. Upon filling the form the response should be appended below the form. 
+In a real world application the data would be properly sanitized before inserting it into a database.
+
+The feedback view also returns the data directly from the mock database to the browser which is generally speaking XSS. None of the front end stuff is XSS protected. 
+OWASP ZAP suggests enabling XSS filtering by setting the X-XSS-Proection response header to 1. This should indeed protect from some sorts of XSS but not all. 
+Also the X-Content type options should be set to nosniff to prevent the browser from doing MIME-type sniffing.
+
+On the redirection page there's a very naive demonstration of A 10-Unvalidated Redirects and Forwards. 
+The user is allowed to type in any address and will be redirected on pressing the button below the input field.
+In a real world application if there would be need for external redirects there would probably be an interceptor that would cross reference the URL for the redirect against some kind of either white or
+ blacklist from the back end before allowing the user to move forward, or alternatively atleast issue a warning to the user when he is leaving the site to an external URL via a link or redirect.
+
+In the admin view that can be accessed from the rightmost link there's 3 separate issues from the OWASP top 10 list. A2-Broken Authentication and Session Management - the authentication and session management
+ relies only on a simple angular scope variable that is set based on back end response to the login method. This kind of system is extremely easy to abuse and override.
+ In a real world application the user would probably be handed something like a JWT signed by the server after successful login, this JWT would then be given an expiration time etc. 
+ The user would use a valid unexpired JWT in all concurrent requests to authenticate himself to the back end. 
+
+Which brings us to the next flaw: A7-Missing Function Level Access Control, the admin check is done purely on the front end and thus can easily be overridden aswell.
+ In a real world application as said above the requests would be validated and the permissions granted to a user would be included in the authorization token or response. 
+
+Finally there's sensitive data exposure (A6-Sensitive Data Exposure) the users are always fetched from the database regardless of if the user is signed in or not and are simply not rendered into view.
+ This in addition to the fact that deletion methods aren't validated leads to the fact that anyone can see the users by debugging the javascript and then proceed to deleting any users whether they're 
+ having admin status or login status at all. This is extremely bad practice and in a real life case the users could probably have a lot of sensitive information like phone numbers, addresses etc. tied to them. 
+ Also none of the data is passed through SSL connection and can be read and analyzed easily by any party.
+
+This would be prevented the same way as the previous 2 issues: Validate all the CRUD methods that contain anything sensitive/restricted on the backend for example against the JWT mentioned above. IE. 
+Only acquire user data after successful admin logon and require authentication and admin priviledges for the management operations aswell. 
+
+Finally everything on the site is also vulnerable to a CSRF attack as there are no CSRF tokens anywhere in the code.
+ In a real world application CSRF tokens should be appended to the requests to ensure that the requests aren't performed externally.
+
+All in all even if these issues are generally speaking very naive implementations I've witnessed a lot of similar logic in many applications. Many frameworks like Django, Vaadin, Spring (security) etc.
+ take steps to help developers address the most critical of these issues automatically but every developer and architect should be aware of at minimum this top 10 list but preferably also stay on top of modern methods of security breaching.
+ I hope this very simple demonstration sheds some light on some of the issues on the OWASP top 10 list and how to counter them.
